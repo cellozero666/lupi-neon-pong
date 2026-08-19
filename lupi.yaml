@@ -1,0 +1,5 @@
+name: "Neon Pong"
+version: 1
+developer: "lupi-sdk"
+public: true
+minify: true

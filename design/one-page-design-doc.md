@@ -1,0 +1,38 @@
+# Neon Pong
+
+## Game Identity / Mantra
+A faithful, lightning-fast Pong duel for the LUPI console and lupinho — pure rally tension, neon on black, first to five.
+
+## Design Pillars
+- instant arcade clarity
+- escalating rally tension
+- fair reflex duel
+
+## Genre / Story / Mechanics Summary
+Neon Pong is a classic two-paddle table-tennis duel rendered in neon-on-black pixel style. Players read the ball trajectory, position their paddle, and reflect the ball; each paddle hit adds speed and re-aims the ball from the contact point. Miss the ball and the opponent scores; first to five wins. Includes 1-Player vs CPU and 2-Player local modes (keyboard and/or physical gamepad) on a single fixed screen.
+
+## Features
+- 1P vs CPU and 2P local modes
+- ball reflects with angle set by paddle contact point
+- rally speed ramps up on every paddle hit (with a fair cap)
+- neon-on-black pixel look, zero gradients, high contrast
+- visual-only feedback (hit flash, score flash) since lupinho has no audio
+- menu -> rally -> win -> rematch scene flow
+
+## Interface
+lupinho keyboard: P1 moves with W/S (UP/DOWN), P2 moves with G/H (triggers); action advances menus. Physical gamepads: P1 = pad 0 D-pad, P2 = pad 1 D-pad (browser Gamepad API). Menus advance with the action button.
+
+## Art Style
+Retro neon arcade: near-black background, two high-contrast accent colors (one per paddle), white ball, chunky clean rectangles, dashed center line, 5x8 bitmap font. Reference feel: classic arcade Pong, not gradient-heavy modern ports.
+
+## Music / Sound
+No audio in lupinho by design (sfx.* is console-only). Feedback is visual: paddle hit flash, score flash, serve pause. On the real console a simple loop and hit blip could be added later.
+
+## Development Roadmap / Launch Criteria
+- Platform: LUPI console + lupinho web simulator (480x270, 60 FPS)
+- Audience: Everyone who remembers Pong and anyone who wants a two-minute reflex duel; zero onboarding needed.
+- Milestone 1: MVP: paddles, ball, wall/paddle bounce, score, win at 5, 1P AI
+- Milestone 2: 2P local on one keyboard (W/S vs G/H) and second gamepad
+- Milestone 3: Polish: angle-by-contact, speed ramp, serve pause, hit/score flash
+- Milestone 4: Release: verified .lupi through lupinho-sdk, no JS console errors
+- Launch Day: This build session
