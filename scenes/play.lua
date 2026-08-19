@@ -50,7 +50,7 @@ local function new(ctx, mode)
     m.phase = "serve"
     m.serveTimer = const.SERVE_FRAMES
     trail.clear(m.trails.ball)
-    audio.fx(audio.SAMPLES.open, 60)
+    audio.play(audio.SFX.point)
     if m.scores[who] >= const.WIN_SCORE then
       m.over = true
       m.winner = who
@@ -112,11 +112,11 @@ local function new(ctx, mode)
         if m.ball.vx < 0 and ball.hits(m.ball, const, m.p1) then
           ball.reflect(m.ball, const, m.p1, 1)
           m.p1.flash = const.HIT_FLASH
-          audio.fx(audio.SAMPLES.hit, 60)
+          audio.play(audio.SFX.hit)
         elseif m.ball.vx > 0 and ball.hits(m.ball, const, m.p2) then
           ball.reflect(m.ball, const, m.p2, -1)
           m.p2.flash = const.HIT_FLASH
-          audio.fx(audio.SAMPLES.hit, 60)
+          audio.play(audio.SFX.hit)
         end
         if m.ball.x < -const.BALL_SIZE then
           score("p2")

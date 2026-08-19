@@ -9,7 +9,7 @@ local DURATION = 300
 local function new(ctx)
   local const = ctx.const
   local t = 0
-  audio.fx(audio.SAMPLES.open, 60)
+  audio.play(audio.SFX.open)
   return {
     name = "logo",
     update = function(f, c)

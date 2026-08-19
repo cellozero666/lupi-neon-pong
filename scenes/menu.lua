@@ -24,7 +24,7 @@ local function new(ctx)
       if input.p1Down() then sel = sel + 1 end
       sel = (sel - 1) % #OPTIONS + 1
       if input.p1Confirm() then
-        audio.fx(audio.SAMPLES.start, 60)
+        audio.play(audio.SFX.start)
         return { action = "play", mode = OPTIONS[sel].mode }
       end
       return nil
