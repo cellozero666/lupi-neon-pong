@@ -85,6 +85,10 @@ bindings. The game stays fully playable in the simulator: `audio.lua` wraps ever
 with a silent fallback. The audio files live in `audio/` and the console runtime plays
 them by name; the codec strips them from the `.lupi` package.
 
+## Test it
+https://cellozero666.itch.io/neon-pong-lupi 
+Use joysticks, or W/S for movement, K to confirm selections
+
 ## License
 
 Proof-of-concept example project.
