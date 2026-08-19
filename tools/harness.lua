@@ -26,6 +26,7 @@ function ui.camera() end
 function ui.spr() end
 function ui.print() end
 function ui.rectfill() end
+function ui.circfill() end
 function ui.log(m) print("[LUPINHO] " .. m) end
 function ui.btn(id, pad)
   if pad == 1 then return ps4[id] == true end

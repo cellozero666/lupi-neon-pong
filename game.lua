@@ -6,12 +6,13 @@ math.randomseed(os.time())
 local const = require "const"
 local colors = require "colors"
 local input = require "input"
+local logo = require "scenes.logo"
 local menu = require "scenes.menu"
 local play = require "scenes.play"
 
 local ctx = { const = const, colors = colors }
 
-local CurrentScene = menu.new(ctx)
+local CurrentScene = logo.new(ctx)
 
 local function change(result)
   if result then

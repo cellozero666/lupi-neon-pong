@@ -3,6 +3,8 @@ local ball = require "ball"
 local ai = require "ai"
 local hud = require "hud"
 local input = require "input"
+local audio = require "audio"
+local trail = require "trail"
 
 local sprP1 = Sprites.img.paddle_p1
 local sprP2 = Sprites.img.paddle_p2
@@ -14,6 +16,7 @@ local function new(ctx, mode)
   local const, colors = ctx.const, ctx.colors
 
   local function buildMatch()
+    audio.music(audio.TRACKS.theme)
     return {
       p1 = paddle.new(const.PADDLE_EDGE, const.H / 2 - const.PADDLE_H / 2, colors.magenta, sprP1),
       p2 = paddle.new(const.W - const.PADDLE_EDGE - const.PADDLE_W,
@@ -29,6 +32,11 @@ local function new(ctx, mode)
       lastScorer = nil,
       flash = 0,
       menuSel = 1,
+      trails = {
+        ball = trail.new(6),
+        p1 = trail.new(6),
+        p2 = trail.new(6),
+      },
     }
   end
 
@@ -41,9 +49,17 @@ local function new(ctx, mode)
     m.serveDir = who == "p1" and 1 or -1
     m.phase = "serve"
     m.serveTimer = const.SERVE_FRAMES
+    trail.clear(m.trails.ball)
+    audio.fx(audio.SAMPLES.open, 60)
     if m.scores[who] >= const.WIN_SCORE then
       m.over = true
       m.winner = who
+      audio.stopMusic()
+      if mode == const.MODE_CPU and who == "p2" then
+        audio.music(audio.TRACKS.loose)
+      else
+        audio.music(audio.TRACKS.win)
+      end
     end
   end
 
@@ -72,6 +88,7 @@ local function new(ctx, mode)
       if input.p1UpHeld() then dy1 = dy1 - 1 end
       if input.p1DownHeld() then dy1 = dy1 + 1 end
       paddle.move(m.p1, dy1, const)
+      trail.push(m.trails.p1, m.p1.x + const.PADDLE_W / 2, m.p1.y + const.PADDLE_H / 2)
 
       local dy2 = 0
       if mode == const.MODE_PVP then
@@ -81,6 +98,7 @@ local function new(ctx, mode)
         ai.update(m.aiState, m.p2, m.ball, const, true, f, math.random)
       end
       paddle.move(m.p2, dy2, const)
+      trail.push(m.trails.p2, m.p2.x + const.PADDLE_W / 2, m.p2.y + const.PADDLE_H / 2)
 
       if m.phase == "serve" then
         m.serveTimer = m.serveTimer - 1
@@ -90,12 +108,15 @@ local function new(ctx, mode)
         end
       else
         ball.update(m.ball, const)
+        trail.push(m.trails.ball, m.ball.x + const.BALL_SIZE / 2, m.ball.y + const.BALL_SIZE / 2)
         if m.ball.vx < 0 and ball.hits(m.ball, const, m.p1) then
           ball.reflect(m.ball, const, m.p1, 1)
           m.p1.flash = const.HIT_FLASH
+          audio.fx(audio.SAMPLES.hit, 60)
         elseif m.ball.vx > 0 and ball.hits(m.ball, const, m.p2) then
           ball.reflect(m.ball, const, m.p2, -1)
           m.p2.flash = const.HIT_FLASH
+          audio.fx(audio.SAMPLES.hit, 60)
         end
         if m.ball.x < -const.BALL_SIZE then
           score("p2")
@@ -107,9 +128,12 @@ local function new(ctx, mode)
     end,
     draw = function(f, c)
       hud.drawCourt(const, colors)
+      trail.drawPaddle(m.trails.p1, colors)
+      trail.drawPaddle(m.trails.p2, colors)
       paddle.draw(m.p1, const, colors)
       paddle.draw(m.p2, const, colors)
       if m.phase == "rally" and m.ball.active then
+        trail.drawBall(m.trails.ball, colors, const.BALL_SIZE / 2)
         ui.spr(m.ball.spr, m.ball.x, m.ball.y)
       end
 

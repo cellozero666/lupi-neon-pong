@@ -1,6 +1,7 @@
 local paddle = require "paddle"
 local ball = require "ball"
 local input = require "input"
+local audio = require "audio"
 
 local sprP1 = Sprites.img.paddle_p1
 local sprP2 = Sprites.img.paddle_p2
@@ -14,6 +15,7 @@ local OPTIONS = {
 local function new(ctx)
   local const, colors = ctx.const, ctx.colors
   local sel = 1
+  audio.stopMusic()
 
   return {
     name = "menu",
@@ -22,6 +24,7 @@ local function new(ctx)
       if input.p1Down() then sel = sel + 1 end
       sel = (sel - 1) % #OPTIONS + 1
       if input.p1Confirm() then
+        audio.fx(audio.SAMPLES.start, 60)
         return { action = "play", mode = OPTIONS[sel].mode }
       end
       return nil
